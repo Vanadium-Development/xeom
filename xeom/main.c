@@ -25,7 +25,7 @@ int main(void)
         }
 
         while (preview_tick(&prev) >= 0);
-        
+
         image_free(&img);
         return 0;
 }

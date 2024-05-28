@@ -9,7 +9,10 @@ add_executable(xeom xeom/main.c
         error/error.h
         error/error.c
         preview/preview.h
-        preview/preview.c)
+        preview/preview.c
+        math/shape.h
+        math/vec3d.h
+        math/vec3d.c)
 
 find_package(SDL2 REQUIRED)
 

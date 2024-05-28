@@ -1,0 +1,85 @@
+//
+// Created by Piotr Krzysztof Wyrwas on 28.05.24.
+//
+
+#include "preview.h"
+
+void preview_render(struct preview *preview)
+{
+        uint64_t width = preview->image->width,
+                height = preview->image->height;
+
+        for (uint64_t i = 0; i < width * height; i++) {
+                uint64_t y = i / width;
+                uint64_t x = i % width;
+
+                struct pixel px;
+
+                if (image_get(preview->image, x, y, &px) < 0) {
+                        return;
+                }
+
+                SDL_SetRenderDrawColor(preview->renderer, px.r, px.g, px.b, SDL_ALPHA_OPAQUE);
+                SDL_RenderDrawPoint(preview->renderer, x, y);
+        }
+
+        SDL_RenderPresent(preview->renderer);
+        SDL_UpdateWindowSurface(preview->window);
+}
+
+int preview_tick(struct preview *preview)
+{
+        SDL_Event evt;
+        while (SDL_PollEvent(&evt)) {
+                if (evt.type == SDL_QUIT) {
+                        preview_close_and_destroy(preview);
+                        return -1;
+                }
+        }
+
+        preview_render(preview);
+
+        return 0;
+}
+
+int preview_create(struct preview *preview, struct image *image)
+{
+        preview->image = image;
+
+        if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) < 0) {
+                printf("Could not initialize preview: %s\n", SDL_GetError());
+                return -1;
+        }
+
+        preview->window = SDL_CreateWindow("Vanadium Xeom", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                           image->width, image->height, SDL_WINDOW_SHOWN);
+
+        if (!preview->window) {
+                printf("Could not create preview window: %s\n", SDL_GetError());
+                return -1;
+        }
+
+        SDL_Surface *windowSurface = SDL_GetWindowSurface(preview->window);
+
+        if (!windowSurface) {
+                printf("Could not retrieve window surface: %s\n", SDL_GetError());
+                SDL_DestroyWindow(preview->window);
+                return -1;
+        }
+
+        preview->renderer = SDL_CreateSoftwareRenderer(windowSurface);
+
+        if (!preview->renderer) {
+                printf("Could not create software renderer: %s\n", SDL_GetError());
+                SDL_DestroyWindow(preview->window);
+                return -1;
+        }
+
+        return 0;
+}
+
+void preview_close_and_destroy(struct preview *preview)
+{
+        SDL_DestroyRenderer(preview->renderer);
+        SDL_DestroyWindow(preview->window);
+}

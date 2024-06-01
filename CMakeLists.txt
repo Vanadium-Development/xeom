@@ -12,7 +12,11 @@ add_executable(xeom xeom/main.c
         preview/preview.c
         math/shape.h
         math/vec3d.h
-        math/vec3d.c)
+        math/vec3d.c
+        math/ray.h
+        math/shape.c
+        math/utility.h
+        math/utility.c)
 
 find_package(SDL2 REQUIRED)
 

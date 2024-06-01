@@ -24,7 +24,7 @@ int main(void)
                 printf("%s\n", xeom_string_error());
         }
 
-        while (preview_tick(&prev) >= 0);
+        while (preview_tick(&prev) == 0);
 
         image_free(&img);
         return 0;

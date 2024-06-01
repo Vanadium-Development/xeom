@@ -16,7 +16,10 @@ add_executable(xeom xeom/main.c
         math/ray.h
         math/shape.c
         math/utility.h
-        math/utility.c)
+        math/utility.c
+        mm/array.h
+        mm/array.c
+)
 
 find_package(SDL2 REQUIRED)
 

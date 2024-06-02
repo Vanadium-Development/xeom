@@ -40,7 +40,7 @@ struct Ray scene_ray(double x, double y, struct Scene *scene)
         vec3d_normalize(&direction);
 
         return (struct Ray) {
-                .origin = vec(0.0, 0.0, 0.0),
+                .origin = scene->camera.location,
                 .direction = direction
         };
 }

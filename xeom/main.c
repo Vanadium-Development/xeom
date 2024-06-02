@@ -21,8 +21,8 @@ int main(void)
         scene.antialiasing = true;
 
         struct Shape ball = {.type = SHAPE_SPHERE};
-        ball.sphere.radius = 10.0;
-        ball.sphere.center = vec(0.0, 0.0, 300.0);
+        ball.sphere.radius = 0.5;
+        ball.sphere.center = vec(0.0, 0.0, 1000);
         ball.shader = shader_normal;
 
         array_push(&scene.shapes, &ball);

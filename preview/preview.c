@@ -65,15 +65,7 @@ int preview_create(struct Preview *preview, struct Image *image)
                 return -1;
         }
 
-        SDL_Surface *windowSurface = SDL_GetWindowSurface(preview->window);
-
-        if (!windowSurface) {
-                printf("Could not retrieve window surface: %s\n", SDL_GetError());
-                SDL_DestroyWindow(preview->window);
-                return -1;
-        }
-
-        preview->renderer = SDL_CreateSoftwareRenderer(windowSurface);
+        preview->renderer = SDL_CreateRenderer(preview->window, 0, SDL_RENDERER_ACCELERATED);
 
         if (!preview->renderer) {
                 printf("Could not create software renderer: %s\n", SDL_GetError());

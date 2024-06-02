@@ -20,11 +20,7 @@ void scene_create(struct Scene *scene)
                 .frame_width = 900,
                 .frame_height = 900,
                 .focal_length = 10000.0,
-                .location = (struct Vec3d) {
-                        .x = 0.0,
-                        .y = 0.0,
-                        .z = 0.0
-                }
+                .location = vec(0.0, 0.0, 0.0)
         };
 }
 

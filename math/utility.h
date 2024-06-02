@@ -7,6 +7,8 @@
 
 #define rgb(_r, _g, _b) ((struct Pixel) {.r = _r, .g = _g, .b = _b})
 
+#define vec(_x, _y, _z) ((struct Vec3d) {.x = (_x), .y = (_y), .z = (_z)})
+
 /**
  * Returns the number of solutions (0 to 2)
  */

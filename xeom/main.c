@@ -22,11 +22,7 @@ int main(void)
 
         struct Shape ball = {.type = SHAPE_SPHERE};
         ball.sphere.radius = 10.0;
-        ball.sphere.center = (struct Vec3d) {
-                .x = 0.0,
-                .y = 0.0,
-                .z = 300.0
-        };
+        ball.sphere.center = vec(0.0, 0.0, 300.0);
         ball.shader = shader_binary;
 
         array_push(&scene.shapes, &ball);
@@ -41,10 +37,10 @@ int main(void)
 
         image_write(&img, FORMAT_PPM, "frame.ppm");
 
-//        struct Preview prev;
-//        preview_create(&prev, &img);
-//
-//        while (preview_tick(&prev) == 0);
+        struct Preview prev;
+        preview_create(&prev, &img);
+
+        while (preview_tick(&prev) == 0);
 
         error:
         image_free(&img);

@@ -12,4 +12,6 @@ struct Ray {
         struct Vec3d direction;
 };
 
+struct Vec3d point_along(struct Ray *ray, double distance);
+
 #endif //XEOM_RAY_H

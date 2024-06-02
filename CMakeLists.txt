@@ -25,8 +25,10 @@ add_executable(xeom xeom/main.c
         core/rt.c
         core/scene.c
         shader/shader.h
-        shader/binary.c
+        shader/shaders/binary.c
         shader/callback.h
+        shader/shaders/normal.c
+        math/ray.c
 )
 
 find_package(SDL2 REQUIRED)

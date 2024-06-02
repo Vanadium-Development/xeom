@@ -19,5 +19,6 @@
 #define PredefinedShader(id) ShaderFunction(id, intersection, scene)
 
 PredefinedShader(shader_binary);
+PredefinedShader(shader_normal);
 
 #endif //XEOM_SHADER_H

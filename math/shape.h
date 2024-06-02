@@ -25,6 +25,8 @@ struct Shape {
         };
 };
 
+struct Vec3d shape_normal(struct Intersection *);
+
 struct Intersection {
         _Bool exists;
         struct Ray *ray;

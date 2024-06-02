@@ -10,6 +10,19 @@
 
 #include <stdlib.h>
 
+struct Vec3d shape_normal(struct Intersection *inter)
+{
+        if (inter->shape->type != SHAPE_SPHERE)
+                return vec(0.0, 0.0, 0.0);
+
+        struct Vec3d normal = point_along(inter->ray, inter->distance);
+        vec3d_sub(&normal, &inter->shape->sphere.center);
+
+        vec3d_normalize(&normal);
+
+        return normal;
+}
+
 struct Intersection no_intersection()
 {
         return (struct Intersection) {.exists = false, .shape = NULL, .ray = NULL, .distance = 0.0};

@@ -32,14 +32,13 @@ struct Intersection trace_ray(struct Ray *ray, struct Scene *scene)
 
 struct Ray scene_ray(double x, double y, struct Scene *scene)
 {
-        struct Vec3d direction = {.x = x, .y = y, .z = scene->camera.focal_length};
+        struct Vec3d direction = {.x = x - (int) scene->camera.frame_width / 2.0, .y = y - (double) scene->camera.frame_height / 2.0, .z = scene->camera.focal_length};
         vec3d_normalize(&direction);
-        direction.z = 1.0;
 
         return (struct Ray) {
                 .origin = (struct Vec3d) {
-                        .x = (double) scene->camera.frame_width / 2.0,
-                        .y = (double) scene->camera.frame_height / 2.0,
+                        .x = 0.0,
+                        .y = 0.0,
                         .z = 0.0
                 },
                 .direction = direction

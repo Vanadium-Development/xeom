@@ -16,11 +16,11 @@ int main(void)
         scene_create(&scene);
 
         struct Shape ball = {.type = SHAPE_SPHERE};
-        ball.sphere.radius = 100.0;
+        ball.sphere.radius = 10.0;
         ball.sphere.center = (struct Vec3d) {
-                .x = (double) scene.camera.frame_width,
-                .y = (double) scene.camera.frame_height,
-                .z = 1000.0
+                .x = 0.0,
+                .y = 0.0,
+                .z = 300.0
         };
 
         array_push(&scene.shapes, &ball);

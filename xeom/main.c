@@ -18,9 +18,9 @@ int main(void)
         struct Shape ball = {.type = SHAPE_SPHERE};
         ball.sphere.radius = 100.0;
         ball.sphere.center = (struct Vec3d) {
-                .x = (double) scene.camera.frame_width / 2.0,
-                .y = (double) scene.camera.frame_height / 2.0,
-                .z = 15.0
+                .x = (double) scene.camera.frame_width,
+                .y = (double) scene.camera.frame_height,
+                .z = 1000.0
         };
 
         array_push(&scene.shapes, &ball);
@@ -33,10 +33,10 @@ int main(void)
                 goto error;
         }
 
-//        struct Preview prev;
-//        preview_create(&prev, &img);
-//
-//        while (preview_tick(&prev) == 0);
+        struct Preview prev;
+        preview_create(&prev, &img);
+
+        while (preview_tick(&prev) == 0);
 
         error:
         image_free(&img);

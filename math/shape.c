@@ -47,7 +47,7 @@ struct Intersection ray_sphere(struct Ray *ray, struct Shape *shape)
                 Cx * Cx - 2 * Cx * Ox + Cy * Cy - 2 * Cy * Oy + Cz * Cz - 2 * Cz * Oz + Ox * Ox + Oy * Oy + Oz * Oz -
                 r * r;
 
-        double solutions[2] = {0.0};
+        double solutions[] = {0.0, 0.0};
 
         int solutionCount = solve_quadratic(a, b, c, &solutions);
 

@@ -7,13 +7,15 @@
 
 #include "../error/error.h"
 
+#include <stdio.h>
+
 void scene_create(struct Scene *scene)
 {
         array_init(&scene->shapes, sizeof(struct Shape));
         scene->camera = (struct Camera) {
                 .frame_width = 900,
                 .frame_height = 900,
-                .focal_length = 1000.0,
+                .focal_length = 600.0,
                 .location = (struct Vec3d) {
                         .x = 0.0,
                         .y = 0.0,

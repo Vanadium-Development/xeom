@@ -14,6 +14,7 @@ struct Intersection trace_ray(struct Ray *ray, struct Scene *scene)
         for (uint64_t i = 0; i < scene->shapes.length; i++) {
                 struct Shape *shape = array_get(&scene->shapes, i);
                 struct Intersection tmpInter = ray_shape(ray, shape);
+
                 if (!tmpInter.exists)
                         continue;
 
@@ -33,6 +34,7 @@ struct Ray scene_ray(double x, double y, struct Scene *scene)
 {
         struct Vec3d direction = {.x = x, .y = y, .z = scene->camera.focal_length};
         vec3d_normalize(&direction);
+        direction.z = 1.0;
 
         return (struct Ray) {
                 .origin = (struct Vec3d) {
@@ -48,8 +50,7 @@ struct Pixel scene_trace_single(double x, double y, struct Scene *scene)
 {
         struct Pixel color = pixel_black();
 
-//        struct Ray ray = scene_ray(x, y, scene);
-        struct Ray ray = {.origin = (struct Vec3d) {.x = x, .y = y}, .direction = (struct Vec3d) {.x = 0.0, .y = 0.0, .z = 1.0}};
+        struct Ray ray = scene_ray(x, y, scene);
         struct Intersection inter = trace_ray(&ray, scene);
 
         if (inter.exists)

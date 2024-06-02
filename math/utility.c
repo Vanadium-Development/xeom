@@ -14,10 +14,10 @@ int solve_quadratic(double a, double b, double c, double (*result)[2])
         if (discriminant < 0)
                 return 0;
 
-        *result[0] = (-b + sqrt(b * b - 4 * a * c)) / (2 * a);
+        (*result)[0] = (-b + sqrt(b * b - 4 * a * c)) / (2 * a);
 
         if (discriminant > 0)
-                *result[1] = (-b - sqrt(b * b - 4 * a * c)) / (2 * a);
+                (*result)[1] = (-b - sqrt(b * b - 4 * a * c)) / (2 * a);
         else
                 return 1;
 

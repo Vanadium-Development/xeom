@@ -8,31 +8,31 @@
 #include "vec3d.h"
 #include "ray.h"
 
-enum shape_type {
+enum ShapeType {
         SHAPE_SPHERE
 };
 
-struct shape {
-        enum shape_type type;
+struct Shape {
+        enum ShapeType type;
         union {
                 struct {
-                        struct vec3d center;
+                        struct Vec3d center;
                         double radius;
                 } sphere;
         };
 };
 
-struct intersection {
+struct Intersection {
         _Bool exists;
-        struct ray *ray;
+        struct Ray *ray;
         double distance;
-        struct shape *shape;
+        struct Shape *shape;
 };
 
-struct intersection no_intersection();
+struct Intersection no_intersection();
 
-struct intersection ray_shape(struct ray *ray, struct shape *shape);
+struct Intersection ray_shape(struct Ray *ray, struct Shape *shape);
 
-struct intersection ray_sphere(struct ray *ray, struct shape *shape);
+struct Intersection ray_sphere(struct Ray *ray, struct Shape *shape);
 
 #endif //XEOM_SHAPE_H

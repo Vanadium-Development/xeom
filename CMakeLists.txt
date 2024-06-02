@@ -19,6 +19,11 @@ add_executable(xeom xeom/main.c
         math/utility.c
         mm/array.h
         mm/array.c
+        core/scene.h
+        core/camera.h
+        core/rt.h
+        core/rt.c
+        core/scene.c
 )
 
 find_package(SDL2 REQUIRED)

@@ -9,18 +9,18 @@
 
 #include "../image/image.h"
 
-struct preview {
-        struct image *image;
+struct Preview {
+        struct Image *image;
         SDL_Window *window;
         SDL_Renderer *renderer;
 };
 
-int preview_create(struct preview *preview, struct image *image);
+int preview_create(struct Preview *preview, struct Image *image);
 
-void preview_render(struct preview *preview);
+void preview_render(struct Preview *preview);
 
-int preview_tick(struct preview *preview);
+int preview_tick(struct Preview *preview);
 
-void preview_close_and_destroy(struct preview *preview);
+void preview_close_and_destroy(struct Preview *preview);
 
 #endif //XEOM_PREVIEW_H

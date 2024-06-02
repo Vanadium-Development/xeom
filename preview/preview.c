@@ -4,7 +4,7 @@
 
 #include "preview.h"
 
-void preview_render(struct preview *preview)
+void preview_render(struct Preview *preview)
 {
         uint64_t width = preview->image->width,
                 height = preview->image->height;
@@ -13,7 +13,7 @@ void preview_render(struct preview *preview)
                 uint64_t y = i / width;
                 uint64_t x = i % width;
 
-                struct pixel px;
+                struct Pixel px;
 
                 if (image_get(preview->image, x, y, &px) < 0) {
                         return;
@@ -27,7 +27,7 @@ void preview_render(struct preview *preview)
         SDL_UpdateWindowSurface(preview->window);
 }
 
-int preview_tick(struct preview *preview)
+int preview_tick(struct Preview *preview)
 {
         SDL_Event evt;
         while (SDL_PollEvent(&evt)) {
@@ -42,20 +42,26 @@ int preview_tick(struct preview *preview)
         return 0;
 }
 
-int preview_create(struct preview *preview, struct image *image)
+int preview_create(struct Preview *preview, struct Image *image)
 {
         preview->image = image;
 
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_TIMER) < 0) {
-                printf("Could not initialize preview: %s\n", SDL_GetError());
+                printf("Could not initialize Preview: %s\n", SDL_GetError());
                 return -1;
         }
 
-        preview->window = SDL_CreateWindow("Vanadium Xeom", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+        char *title = calloc(100, sizeof(char));
+
+        sprintf(title, "Vanadium Xeom (%llu x %llu)", image->width, image->height);
+
+        preview->window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
                                            image->width, image->height, SDL_WINDOW_SHOWN);
 
+        free(title);
+
         if (!preview->window) {
-                printf("Could not create preview window: %s\n", SDL_GetError());
+                printf("Could not create Preview window: %s\n", SDL_GetError());
                 return -1;
         }
 
@@ -78,7 +84,7 @@ int preview_create(struct preview *preview, struct image *image)
         return 0;
 }
 
-void preview_close_and_destroy(struct preview *preview)
+void preview_close_and_destroy(struct Preview *preview)
 {
         SDL_DestroyRenderer(preview->renderer);
         SDL_DestroyWindow(preview->window);

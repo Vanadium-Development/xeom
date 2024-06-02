@@ -6,14 +6,14 @@
 
 #include <string.h>
 
-int _array_perform_alloc(struct array *array)
+int _array_perform_alloc(struct Array *array)
 {
         array->data = reallocf(array->data, array->allocated_items * array->item_size);
 
         return array->data ? 0 : -1;
 }
 
-int _array_check_resize(struct array *array)
+int _array_check_resize(struct Array *array)
 {
         if (array->length < array->allocated_items)
                 return 0;
@@ -22,7 +22,7 @@ int _array_check_resize(struct array *array)
         return _array_perform_alloc(array);
 }
 
-int array_init(struct array *array, size_t item_size)
+int array_init(struct Array *array, size_t item_size)
 {
         array->item_size = item_size;
         array->length = 0;
@@ -36,7 +36,7 @@ int array_init(struct array *array, size_t item_size)
         return 0;
 }
 
-int array_push(struct array *array, void *item)
+int array_push(struct Array *array, void *item)
 {
         if (_array_check_resize(array) < 0)
                 return -1;
@@ -46,7 +46,7 @@ int array_push(struct array *array, void *item)
         return 0;
 }
 
-void *array_get(struct array *array, size_t index)
+void *array_get(struct Array *array, size_t index)
 {
         if (index >= array->length)
                 return NULL;
@@ -54,7 +54,7 @@ void *array_get(struct array *array, size_t index)
         return &array->data[array->item_size * index];
 }
 
-int array_free(struct array *array, void (*callback)(void *))
+int array_free(struct Array *array, void (*callback)(void *))
 {
         if (!callback)
                 goto no_callback;
@@ -68,5 +68,6 @@ int array_free(struct array *array, void (*callback)(void *))
 
         no_callback:
         free(array->data);
-        memset(array, 0, sizeof(struct array));
+        memset(array, 0, sizeof(struct Array));
+        return 0;
 }

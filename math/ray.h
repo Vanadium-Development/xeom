@@ -7,9 +7,9 @@
 
 #include "vec3d.h"
 
-struct ray {
-        struct vec3d origin;
-        struct vec3d direction;
+struct Ray {
+        struct Vec3d origin;
+        struct Vec3d direction;
 };
 
 #endif //XEOM_RAY_H

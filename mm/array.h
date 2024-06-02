@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 
-struct array {
+struct Array {
         size_t item_size;
         size_t length;
         size_t allocated_items;
@@ -15,12 +15,12 @@ struct array {
         char *data;
 };
 
-int array_init(struct array *array, size_t item_size);
+int array_init(struct Array *array, size_t item_size);
 
-int array_push(struct array *array, void *item);
+int array_push(struct Array *array, void *item);
 
-void *array_get(struct array *array, size_t index);
+void *array_get(struct Array *array, size_t index);
 
-int array_free(struct array *array, void (*callback)(void *));
+int array_free(struct Array *array, void (*callback)(void *));
 
 #endif //XEOM_ARRAY_H

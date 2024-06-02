@@ -7,7 +7,7 @@
 
 #include <inttypes.h>
 
-enum xeom_error_t : uint16_t {
+enum XeomError : uint16_t {
         XEOM_NO_ERROR = 0,
 
         XEOM_IMG_INVALID_DIMENSIONS,
@@ -15,12 +15,14 @@ enum xeom_error_t : uint16_t {
         XEOM_IMG_UNSUPPORTED_FORMAT,
         XEOM_IMG_OUT_OF_BOUNDS,
 
+        XEOM_UNMATCHED_SIZES,
+
         XEOM_FOPEN_FAIL,
 };
 
-extern enum xeom_error_t xeom_err;
+extern enum XeomError xeom_err;
 
-void raise_error(enum xeom_error_t error);
+void raise_error(enum XeomError error);
 
 const char *xeom_string_error();
 

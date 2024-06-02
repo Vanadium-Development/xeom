@@ -4,11 +4,17 @@
 
 #include "image.h"
 #include "../error/error.h"
+#include "../math/utility.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 
-int image_create(struct image *image, uint64_t width, uint64_t height)
+struct Pixel pixel_black()
+{
+        return (struct Pixel) {0, 0, 0};
+}
+
+int image_create(struct Image *image, uint64_t width, uint64_t height)
 {
         if (!width || !height) {
                 raise_error(XEOM_IMG_INVALID_DIMENSIONS);
@@ -17,11 +23,14 @@ int image_create(struct image *image, uint64_t width, uint64_t height)
 
         image->width = width;
         image->height = height;
-        image->pixels = calloc(width * height, sizeof(struct pixel));
+        image->pixels = malloc(width * height * sizeof(struct Pixel));
+
+        image_fill(image, rgb(45, 52, 54));
+
         return 0;
 }
 
-void image_free(struct image *image)
+void image_free(struct Image *image)
 {
         free(image->pixels);
 }
@@ -29,31 +38,31 @@ void image_free(struct image *image)
 /**
  * A utility function to convert <code>(x, y)</code> coordinates into a raster index
  */
-static uint64_t xy_to_i(struct image *image, uint64_t x, uint64_t y)
+static uint64_t xy_to_i(struct Image *image, uint64_t x, uint64_t y)
 {
         return image->width * y + x;
 }
 
-static int image_write_ppm(struct image *image, FILE *file)
+static int image_write_ppm(struct Image *image, FILE *file)
 {
         fprintf(file, "P3\n%llu\n%llu\n255\n", image->width, image->height);
 
         for (uint64_t y = 0; y < image->height; y++)
                 for (uint64_t x = 0; x < image->width; x++) {
-                        struct pixel px = image->pixels[xy_to_i(image, x, y)];
+                        struct Pixel px = image->pixels[xy_to_i(image, x, y)];
                         fprintf(file, "%d %d %d\n", px.r, px.g, px.b);
                 }
 
         return 0;
 }
 
-static int image_write_proprietary(struct image *image, FILE *file)
+static int image_write_proprietary(struct Image *image, FILE *file)
 {
         raise_error(XEOM_IMG_UNSUPPORTED_FORMAT);
         return -1;
 }
 
-int image_write(struct image *image, enum output_format format, const char *filename)
+int image_write(struct Image *image, enum OutputFormat format, const char *filename)
 {
         FILE *fd = fopen(filename, "w");
 
@@ -82,7 +91,7 @@ int image_write(struct image *image, enum output_format format, const char *file
         return status;
 }
 
-inline int image_set(struct image *image, uint64_t x, uint64_t y, struct pixel color)
+inline int image_set(struct Image *image, uint64_t x, uint64_t y, struct Pixel color)
 {
         if (x >= image->width || y >= image->height) {
                 raise_error(XEOM_IMG_OUT_OF_BOUNDS);
@@ -93,7 +102,7 @@ inline int image_set(struct image *image, uint64_t x, uint64_t y, struct pixel c
         return 0;
 }
 
-inline int image_get(struct image *image, uint64_t x, uint64_t y, struct pixel *color)
+inline int image_get(struct Image *image, uint64_t x, uint64_t y, struct Pixel *color)
 {
         if (x >= image->width || y >= image->height) {
                 raise_error(XEOM_IMG_OUT_OF_BOUNDS);
@@ -101,5 +110,13 @@ inline int image_get(struct image *image, uint64_t x, uint64_t y, struct pixel *
         }
 
         *color = image->pixels[xy_to_i(image, x, y)];
+        return 0;
+}
+
+int image_fill(struct Image *image, struct Pixel color)
+{
+        for (uint64_t i = 0; i < image->width * image->height; i++)
+                image->pixels[i] = color;
+
         return 0;
 }

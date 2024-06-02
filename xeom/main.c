@@ -6,26 +6,40 @@
 
 #include "../preview/preview.h"
 
+#include "../core/scene.h"
+
+#include "../math/shape.h"
+
 int main(void)
 {
-        struct image img;
-        image_create(&img, 1000, 700);
+        struct Scene scene;
+        scene_create(&scene);
 
-        struct preview prev;
-        preview_create(&prev, &img);
+        struct Shape ball = {.type = SHAPE_SPHERE};
+        ball.sphere.radius = 100.0;
+        ball.sphere.center = (struct Vec3d) {
+                .x = (double) scene.camera.frame_width / 2.0,
+                .y = (double) scene.camera.frame_height / 2.0,
+                .z = 15.0
+        };
 
-        for (uint64_t i = 0; i < 1000 * 700; i++) {
-                if (image_set(&img, i % 1000, i / 1000, (struct pixel) {.r = 255}) < 0) {
-                        printf("%s\n", xeom_string_error());
-                }
+        array_push(&scene.shapes, &ball);
+
+        struct Image img;
+        image_create(&img, scene.camera.frame_width, scene.camera.frame_height);
+
+        if (scene_render(&scene, &img) < 0) {
+                printf("Rendering failed: %s\n", xeom_string_error());
+                goto error;
         }
 
-        if (image_write(&img, FORMAT_PPM, "image.ppm") < 0) {
-                printf("%s\n", xeom_string_error());
-        }
+//        struct Preview prev;
+//        preview_create(&prev, &img);
+//
+//        while (preview_tick(&prev) == 0);
 
-        while (preview_tick(&prev) == 0);
-
+        error:
         image_free(&img);
+        scene_free(&scene);
         return 0;
 }

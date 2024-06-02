@@ -5,6 +5,8 @@
 #ifndef XEOM_UTILITY_H
 #define XEOM_UTILITY_H
 
+#define rgb(_r, _g, _b) ((struct Pixel) {.r = _r, .g = _g, .b = _b})
+
 /**
  * Returns the number of solutions (0 to 2)
  */

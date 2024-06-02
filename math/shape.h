@@ -8,12 +8,15 @@
 #include "vec3d.h"
 #include "ray.h"
 
+#include "../shader/shader.h"
+
 enum ShapeType {
         SHAPE_SPHERE
 };
 
 struct Shape {
         enum ShapeType type;
+        FragmentShader shader;
         union {
                 struct {
                         struct Vec3d center;

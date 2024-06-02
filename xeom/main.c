@@ -10,10 +10,15 @@
 
 #include "../math/shape.h"
 
+#include "../shader/shader.h"
+
+#include <stdbool.h>
+
 int main(void)
 {
         struct Scene scene;
         scene_create(&scene);
+        scene.antialiasing = true;
 
         struct Shape ball = {.type = SHAPE_SPHERE};
         ball.sphere.radius = 10.0;
@@ -22,6 +27,7 @@ int main(void)
                 .y = 0.0,
                 .z = 300.0
         };
+        ball.shader = shader_binary;
 
         array_push(&scene.shapes, &ball);
 
@@ -33,10 +39,12 @@ int main(void)
                 goto error;
         }
 
-        struct Preview prev;
-        preview_create(&prev, &img);
+        image_write(&img, FORMAT_PPM, "frame.ppm");
 
-        while (preview_tick(&prev) == 0);
+//        struct Preview prev;
+//        preview_create(&prev, &img);
+//
+//        while (preview_tick(&prev) == 0);
 
         error:
         image_free(&img);

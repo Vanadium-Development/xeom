@@ -12,6 +12,8 @@
 struct Scene {
         struct Array shapes;
         struct Camera camera;
+        _Bool antialiasing;
+        uint64_t kern_size;
 };
 
 void scene_create(struct Scene *scene);

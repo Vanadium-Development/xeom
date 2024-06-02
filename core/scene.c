@@ -9,9 +9,13 @@
 
 #include <stdio.h>
 
+#include <stdbool.h>
+
 void scene_create(struct Scene *scene)
 {
         array_init(&scene->shapes, sizeof(struct Shape));
+        scene->kern_size = 4;
+        scene->antialiasing = true;
         scene->camera = (struct Camera) {
                 .frame_width = 900,
                 .frame_height = 900,

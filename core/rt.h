@@ -13,6 +13,10 @@ struct Intersection trace_ray(struct Ray *ray, struct Scene *scene);
 
 struct Ray scene_ray(double x, double y, struct Scene *scene);
 
+struct Pixel _scene_trace(double x, double y, struct Scene *scene);
+
+struct Pixel _scene_trace_raw(struct Ray *ray, struct Scene *scene, uint64_t bounces);
+
 struct Pixel scene_trace_single(double x, double y, struct Scene *scene);
 
 #endif //XEOM_RT_H

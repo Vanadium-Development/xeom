@@ -4,7 +4,7 @@
 
 #include "../shader.h"
 
-ShaderFunction(shader_normal, inter, scene)
+ShaderFunction(shader_normal, inter, scene, bounces)
 {
         struct Vec3d normal = shape_normal(inter);
 

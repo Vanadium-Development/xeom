@@ -17,6 +17,10 @@ enum ShapeType {
 struct Shape {
         enum ShapeType type;
         FragmentShader shader;
+        struct {
+                double diffuse_roughness;
+                uint8_t diffuse_samples;
+        } shading_hints;
         union {
                 struct {
                         struct Vec3d center;

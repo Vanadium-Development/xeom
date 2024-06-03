@@ -14,6 +14,13 @@ struct Pixel pixel_black()
         return (struct Pixel) {0, 0, 0};
 }
 
+void pixel_mul(struct Pixel *pixel, double d)
+{
+        pixel->r *= d;
+        pixel->g *= d;
+        pixel->b *= d;
+}
+
 int image_create(struct Image *image, uint64_t width, uint64_t height)
 {
         if (!width || !height) {
@@ -117,6 +124,29 @@ int image_fill(struct Image *image, struct Pixel color)
 {
         for (uint64_t i = 0; i < image->width * image->height; i++)
                 image->pixels[i] = color;
+
+        return 0;
+}
+
+int image_average(struct Image *target, struct Image *another)
+{
+        if (target->width != another->width || target->height != another->height) {
+                raise_error(XEOM_IMG_AVG_UNMATCHED_SIZES);
+                return -1;
+        }
+
+        for (uint64_t i = 0; i < target->width * target->height; i ++) {
+                struct Pixel targetPixel = target->pixels[i];
+                struct Pixel anotherPixel = another->pixels[i];
+
+                uint8_t newR = (targetPixel.r + anotherPixel.r) / 2;
+                uint8_t newG = (targetPixel.g + anotherPixel.g) / 2;
+                uint8_t newB = (targetPixel.b + anotherPixel.b) / 2;
+
+                target->pixels[i].r = newR;
+                target->pixels[i].g = newG;
+                target->pixels[i].b = newB;
+        }
 
         return 0;
 }

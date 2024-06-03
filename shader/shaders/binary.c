@@ -4,7 +4,7 @@
 
 #include "../shader.h"
 
-ShaderFunction(shader_binary, intersection, scene)
+ShaderFunction(shader_binary, intersection, scene, bounces)
 {
         return rgb(255, 255, 255);
 }

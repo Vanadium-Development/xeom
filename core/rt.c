@@ -45,18 +45,28 @@ struct Ray scene_ray(double x, double y, struct Scene *scene)
         };
 }
 
+
 struct Pixel _scene_trace(double x, double y, struct Scene *scene)
 {
-        struct Pixel color = pixel_black();
-
         struct Ray ray = scene_ray(x, y, scene);
-        struct Intersection inter = trace_ray(&ray, scene);
+        return _scene_trace_raw(&ray, scene, 0);
+}
+
+struct Pixel _scene_trace_raw(struct Ray *ray, struct Scene *scene, uint64_t bounces)
+{
+        if (bounces > scene->bounces_limit) {
+                return pixel_black();
+        }
+
+        struct Pixel color = render_sky(2, ray->direction.y + 1);
+
+        struct Intersection inter = trace_ray(ray, scene);
 
         if (inter.exists) {
-                if (!inter.shape->shader)
+                if (!inter.shape->shader) {
                         color = rgb(224, 86, 253);
-                else
-                        color = inter.shape->shader(&inter, scene);
+                } else
+                        color = inter.shape->shader(&inter, scene, bounces);
         }
 
         return color;
@@ -86,5 +96,5 @@ struct Pixel scene_trace_single(double x, double y, struct Scene *scene)
         g /= count;
         b /= count;
 
-        return (struct Pixel) {.r = r, .g = g, .b = b};
+        return (struct Pixel) {r, g, b};
 }

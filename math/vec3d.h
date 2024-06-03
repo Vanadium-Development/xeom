@@ -25,4 +25,6 @@ void vec3d_normalize(struct Vec3d *vec);
 
 double vec3d_dot(struct Vec3d *a, struct Vec3d *b);
 
+struct Vec3d vec3d_random();
+
 #endif //XEOM_VEC3D_H

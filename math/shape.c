@@ -36,7 +36,7 @@ struct Intersection ray_shape(struct Ray *ray, struct Shape *shape)
         return no_intersection();
 }
 
-#define EPSILON 0.0001
+#define EPSILON (10E-6)
 
 struct Intersection ray_sphere(struct Ray *ray, struct Shape *shape)
 {
@@ -72,9 +72,9 @@ struct Intersection ray_sphere(struct Ray *ray, struct Shape *shape)
         if (solutionCount == 1)
                 inter.distance = solutions[0];
         else {
-                if (solutions[0] < EPSILON)
+                if (solutions[0] <= EPSILON)
                         inter.distance = solutions[1];
-                else if (solutions[1] < EPSILON)
+                else if (solutions[1] <= EPSILON)
                         inter.distance = solutions[0];
                 else
                         inter.distance = min(solutions[0], solutions[1]);

@@ -22,7 +22,9 @@ const char *xeom_string_error()
                 ERROR(XEOM_IMG_INVALID_FORMAT, "The provided format is invalid");
                 ERROR(XEOM_IMG_UNSUPPORTED_FORMAT, "The provided format is not supported");
                 ERROR(XEOM_IMG_OUT_OF_BOUNDS, "The provided Image coordinate is out of bounds");
-                ERROR(XEOM_UNMATCHED_SIZES, "The output image dimensions must match the frame dimensions of the camera");
+                ERROR(XEOM_IMG_AVG_UNMATCHED_SIZES, "Cannot perform averaging operation on images with differing sizes");
+                ERROR(XEOM_UNMATCHED_SIZES,
+                      "The output image dimensions must match the frame dimensions of the camera");
         }
 
 #undef ERROR

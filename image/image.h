@@ -15,6 +15,8 @@ struct Pixel {
 
 struct Pixel pixel_black();
 
+void pixel_mul(struct Pixel *pixel, double d);
+
 struct Image {
         uint64_t width;
         uint64_t height;
@@ -37,5 +39,7 @@ int image_set(struct Image *image, uint64_t x, uint64_t y, struct Pixel color);
 int image_get(struct Image *image, uint64_t x, uint64_t y, struct Pixel *color);
 
 int image_fill(struct Image *image, struct Pixel color);
+
+int image_average(struct Image *target, struct Image *another);
 
 #endif //XEOM_IMAGE_H

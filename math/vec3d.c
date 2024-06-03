@@ -5,6 +5,7 @@
 #include "vec3d.h"
 
 #include <math.h>
+#include <stdlib.h>
 
 void vec3d_mul(struct Vec3d *vec, double d)
 {
@@ -56,4 +57,14 @@ void vec3d_normalize(struct Vec3d *vec)
 double vec3d_dot(struct Vec3d *a, struct Vec3d *b)
 {
         return a->x * b->x + a->y * b->y + a->z + b->z;
+}
+
+double _rand_double()
+{
+        return ((double) rand()) / (((double) RAND_MAX));
+}
+
+struct Vec3d vec3d_random()
+{
+        return (struct Vec3d) {_rand_double(), _rand_double(), _rand_double()};
 }

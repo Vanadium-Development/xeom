@@ -29,6 +29,9 @@ add_executable(xeom xeom/main.c
         shader/callback.h
         shader/shaders/normal.c
         math/ray.c
+        shader/shaders/mirror.c
+        shader/nothing.c
+        shader/shaders/diffuse.c
 )
 
 find_package(SDL2 REQUIRED)

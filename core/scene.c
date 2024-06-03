@@ -19,9 +19,10 @@ void scene_create(struct Scene *scene)
         scene->camera = (struct Camera) {
                 .frame_width = 900,
                 .frame_height = 900,
-                .focal_length = 600.0,
+                .focal_length = 800.0,
                 .location = vec(0.0, 0.0, 0.0)
         };
+        scene->bounces_limit = 50;
 }
 
 void scene_free(struct Scene *scene)

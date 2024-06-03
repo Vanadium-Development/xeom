@@ -14,6 +14,7 @@ struct Scene {
         struct Camera camera;
         _Bool antialiasing;
         uint64_t kern_size;
+        uint64_t bounces_limit;
 };
 
 void scene_create(struct Scene *scene);

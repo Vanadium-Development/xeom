@@ -15,10 +15,15 @@
 
 #include "../math/utility.h"
 
-#define ShaderFunction(id, _inter, _scene) struct Pixel id(struct Intersection *_inter, struct Scene *_scene)
-#define PredefinedShader(id) ShaderFunction(id, intersection, scene)
+#define ShaderFunction(id, _inter, _scene, _bounces) struct Pixel id(struct Intersection *_inter, struct Scene *_scene, uint64_t _bounces)
+#define PredefinedShader(id) ShaderFunction(id, intersection, scene, bounces)
+
+struct Pixel render_sky(double frame_height, double y);
 
 PredefinedShader(shader_binary);
 PredefinedShader(shader_normal);
+PredefinedShader(shader_metal);
+PredefinedShader(shader_nothing);
+PredefinedShader(shader_diffuse);
 
 #endif //XEOM_SHADER_H

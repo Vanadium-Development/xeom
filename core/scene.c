@@ -19,7 +19,7 @@ void scene_create(struct Scene *scene)
         scene->camera = (struct Camera) {
                 .frame_width = 900,
                 .frame_height = 900,
-                .focal_length = 850000.0,
+                .focal_length = 600.0,
                 .location = vec(0.0, 0.0, 0.0)
         };
 }

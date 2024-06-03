@@ -10,8 +10,6 @@
 
 #include "../math/shape.h"
 
-#include "../shader/shader.h"
-
 #include <stdbool.h>
 
 int main(void)
@@ -20,12 +18,19 @@ int main(void)
         scene_create(&scene);
         scene.antialiasing = true;
 
-        struct Shape ball = {.type = SHAPE_SPHERE};
-        ball.sphere.radius = 0.5;
-        ball.sphere.center = vec(0.0, 0.0, 1000);
-        ball.shader = shader_normal;
+        struct Shape ball1 = {.type = SHAPE_SPHERE};
+        ball1.sphere.radius = 0.5;
+        ball1.sphere.center = vec(0.0, 0.0, 1.5);
+        ball1.shader = shader_normal;
 
-        array_push(&scene.shapes, &ball);
+        array_push(&scene.shapes, &ball1);
+
+        struct Shape ball2 = {.type = SHAPE_SPHERE};
+        ball2.sphere.radius = 0.25;
+        ball2.sphere.center = vec(0.5, 0.0, 1.2);
+        ball2.shader = shader_normal;
+
+        array_push(&scene.shapes, &ball2);
 
         struct Image img;
         image_create(&img, scene.camera.frame_width, scene.camera.frame_height);

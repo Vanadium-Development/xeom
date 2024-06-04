@@ -12,8 +12,8 @@
 struct Camera {
         struct Vec3d location;
         double focal_length;
-        uint64_t frame_width;
-        uint64_t frame_height;
+        double width;
+        double aspect_ratio;
 };
 
 #endif //XEOM_CAMERA_H

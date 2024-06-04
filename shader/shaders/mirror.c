@@ -7,9 +7,11 @@
 
 ShaderFunction(shader_metal, intersection, scene, bounces)
 {
+        bounces ++;
+
         // First, find the reflection direction and origin point for the new ray
         struct Vec3d orgNormal = shape_normal(intersection);
-        struct Vec3d origin = point_along(intersection->ray, intersection->distance);
+        struct Vec3d origin = ray_interpolate(intersection->ray, intersection->distance);
 
         uint64_t r = 0;
         uint64_t g = 0;
@@ -18,8 +20,6 @@ ShaderFunction(shader_metal, intersection, scene, bounces)
 
         for (uint64_t i = 0; i < n; i++) {
                 struct Vec3d normal = orgNormal;
-                normal.x += (0.1 / (double) RAND_MAX) * (double) rand();
-                normal.y += (0.1 / (double) RAND_MAX) * (double) rand();
 
                 // Trace a ray in that direction
                 struct Ray outbound = {.origin = origin, .direction = normal};

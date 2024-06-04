@@ -4,7 +4,7 @@
 
 #include "ray.h"
 
-struct Vec3d point_along(struct Ray *ray, double distance)
+struct Vec3d ray_interpolate(struct Ray *ray, double distance)
 {
         struct Vec3d vec = ray->origin;
         struct Vec3d offset = ray->direction;

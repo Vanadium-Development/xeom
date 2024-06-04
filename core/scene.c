@@ -17,10 +17,10 @@ void scene_create(struct Scene *scene)
         scene->kern_size = 4;
         scene->antialiasing = true;
         scene->camera = (struct Camera) {
-                .frame_width = 900,
-                .frame_height = 900,
-                .focal_length = 800.0,
-                .location = vec(0.0, 0.0, 0.0)
+                .width = 1000,
+                .aspect_ratio = 16.0 / 9.0,
+                .focal_length = 1.0,
+                .location = vec(0.0, 0.0, 0.0),
         };
         scene->bounces_limit = 50;
 }
@@ -32,15 +32,10 @@ void scene_free(struct Scene *scene)
 
 int scene_render(struct Scene *scene, struct Image *output)
 {
-        if (output->width != scene->camera.frame_width || output->height != scene->camera.frame_height) {
-                raise_error(XEOM_UNMATCHED_SIZES);
-                return -1;
-        }
-
-        for (uint64_t y = 0; y < scene->camera.frame_height; y++) {
-                for (uint64_t x = 0; x < scene->camera.frame_width; x++) {
+        for (uint64_t y = 0; y < scene->camera.width / scene->camera.aspect_ratio; y ++) {
+                for (uint64_t x = 0; x < scene->camera.width; x ++) {
                         struct Pixel px = scene_trace_single((double) x, (double) y, scene);
-                        image_set(output, x, y, px);
+                        image_set(output, (uint64_t) x, (uint64_t) y, px);
                 }
         }
 

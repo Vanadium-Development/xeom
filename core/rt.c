@@ -8,6 +8,8 @@
 
 #include "../math/utility.h"
 
+#include <math.h>
+
 struct Intersection trace_ray(struct Ray *ray, struct Scene *scene)
 {
         struct Intersection inter = no_intersection();
@@ -34,9 +36,14 @@ struct Intersection trace_ray(struct Ray *ray, struct Scene *scene)
 
 struct Ray scene_ray(double x, double y, struct Scene *scene)
 {
-        struct Vec3d direction = {.x = x - (int) scene->camera.frame_width / 2.0, .y = y -
-                                                                                       (double) scene->camera.frame_height /
-                                                                                       2.0, .z = scene->camera.focal_length};
+        double x00 = 1.0 / scene->camera.width - 0.5;
+        double y00 = 1.0 / (scene->camera.width / scene->camera.aspect_ratio) - 0.5;
+
+        double dx = 1.0 / scene->camera.width;
+        double dy = 1.0 / scene->camera.width / scene->camera.aspect_ratio;
+
+        struct Vec3d direction = {.x = x00 + x * dx, .y = y00 + y * dy, scene->camera.focal_length};
+
         vec3d_normalize(&direction);
 
         return (struct Ray) {
@@ -44,7 +51,6 @@ struct Ray scene_ray(double x, double y, struct Scene *scene)
                 .direction = direction
         };
 }
-
 
 struct Pixel _scene_trace(double x, double y, struct Scene *scene)
 {

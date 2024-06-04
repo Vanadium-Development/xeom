@@ -57,7 +57,7 @@ static int image_write_ppm(struct Image *image, FILE *file)
         for (uint64_t y = 0; y < image->height; y++)
                 for (uint64_t x = 0; x < image->width; x++) {
                         struct Pixel px = image->pixels[xy_to_i(image, x, y)];
-                        fprintf(file, "%d %d %d\n", px.r, px.g, px.b);
+                        fprintf(file, "%d %d %d\n", (uint8_t) px.r, (uint8_t) px.g, (uint8_t) px.b);
                 }
 
         return 0;
@@ -128,24 +128,37 @@ int image_fill(struct Image *image, struct Pixel color)
         return 0;
 }
 
-int image_average(struct Image *target, struct Image *another)
+int image_add(struct Image *target, struct Image *another)
 {
         if (target->width != another->width || target->height != another->height) {
                 raise_error(XEOM_IMG_AVG_UNMATCHED_SIZES);
                 return -1;
         }
 
-        for (uint64_t i = 0; i < target->width * target->height; i ++) {
-                struct Pixel targetPixel = target->pixels[i];
+        for (uint64_t i = 0; i < target->width * target->height; i++) {
                 struct Pixel anotherPixel = another->pixels[i];
 
-                uint8_t newR = (targetPixel.r + anotherPixel.r) / 2;
-                uint8_t newG = (targetPixel.g + anotherPixel.g) / 2;
-                uint8_t newB = (targetPixel.b + anotherPixel.b) / 2;
+                target->pixels[i].r += anotherPixel.r;
+                target->pixels[i].g += anotherPixel.g;
+                target->pixels[i].b += anotherPixel.b;
+        }
 
-                target->pixels[i].r = newR;
-                target->pixels[i].g = newG;
-                target->pixels[i].b = newB;
+        return 0;
+}
+
+int image_output_average(struct Image *target, struct Image *source, uint64_t sample_count)
+{
+        if (target->width != source->width || target->height != source->height) {
+                raise_error(XEOM_IMG_AVG_UNMATCHED_SIZES);
+                return -1;
+        }
+
+        for (uint64_t i = 0; i < target->width * target->height; i++) {
+                struct Pixel anotherPixel = source->pixels[i];
+
+                target->pixels[i].r = anotherPixel.r / sample_count;
+                target->pixels[i].g = anotherPixel.g / sample_count;
+                target->pixels[i].b = anotherPixel.b / sample_count;
         }
 
         return 0;

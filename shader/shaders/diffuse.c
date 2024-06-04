@@ -11,7 +11,7 @@ ShaderFunction(shader_diffuse, inter, scene, bounces)
         bounces ++;
 
         struct Vec3d normal = shape_normal(inter);
-        struct Vec3d intersectionPoint = point_along(inter->ray, inter->distance);
+        struct Vec3d intersectionPoint = ray_interpolate(inter->ray, inter->distance);
 
         struct Vec3d randomVector = vec3d_random();
 
@@ -27,6 +27,10 @@ ShaderFunction(shader_diffuse, inter, scene, bounces)
 
         pixel_mul(&rayColor, 1.0 - inter->shape->shading_hints.diffuse_roughness);
 
-        return rayColor;
+        struct Pixel eigenFarbe = inter->shape->color;
+
+        pixel_mul(&eigenFarbe, inter->shape->shading_hints.diffuse_roughness);
+
+        return rgb(rayColor.r + eigenFarbe.r, rayColor.g + eigenFarbe.g, rayColor.b + eigenFarbe.b);
 }
 

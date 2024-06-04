@@ -8,9 +8,9 @@
 #include <inttypes.h>
 
 struct Pixel {
-        uint8_t r;
-        uint8_t g;
-        uint8_t b;
+        uint64_t r;
+        uint64_t g;
+        uint64_t b;
 };
 
 struct Pixel pixel_black();
@@ -20,7 +20,7 @@ void pixel_mul(struct Pixel *pixel, double d);
 struct Image {
         uint64_t width;
         uint64_t height;
-        struct Pixel *pixels;
+        struct Pixel * pixels;
 };
 
 enum OutputFormat {
@@ -40,6 +40,8 @@ int image_get(struct Image *image, uint64_t x, uint64_t y, struct Pixel *color);
 
 int image_fill(struct Image *image, struct Pixel color);
 
-int image_average(struct Image *target, struct Image *another);
+int image_add(struct Image *target, struct Image *another);
+
+int image_output_average(struct Image *target, struct Image *source, uint64_t sample_count);
 
 #endif //XEOM_IMAGE_H

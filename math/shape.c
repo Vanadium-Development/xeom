@@ -15,7 +15,7 @@ struct Vec3d shape_normal(struct Intersection *inter)
         if (inter->shape->type != SHAPE_SPHERE)
                 return vec(0.0, 0.0, 0.0);
 
-        struct Vec3d normal = point_along(inter->ray, inter->distance);
+        struct Vec3d normal = ray_interpolate(inter->ray, inter->distance);
         vec3d_sub(&normal, &inter->shape->sphere.center);
 
         vec3d_normalize(&normal);
@@ -36,7 +36,7 @@ struct Intersection ray_shape(struct Ray *ray, struct Shape *shape)
         return no_intersection();
 }
 
-#define EPSILON (10E-6)
+#define EPSILON (10E-10)
 
 struct Intersection ray_sphere(struct Ray *ray, struct Shape *shape)
 {

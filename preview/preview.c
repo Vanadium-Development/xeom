@@ -19,7 +19,8 @@ void preview_render(struct Preview *preview)
                         return;
                 }
 
-                SDL_SetRenderDrawColor(preview->renderer, px.r, px.g, px.b, SDL_ALPHA_OPAQUE);
+                SDL_SetRenderDrawColor(preview->renderer, (uint8_t) px.r, (uint8_t) px.g, (uint8_t) px.b,
+                                       SDL_ALPHA_OPAQUE);
                 SDL_RenderDrawPoint(preview->renderer, x, y);
         }
 

@@ -22,7 +22,7 @@ int main(void)
         scene.camera.width = 1000;
         scene.camera.location.y += 0.25;
         scene.camera.aspect_ratio = 10.0 / 9.0;
-        scene.antialiasing = true;
+        scene.antialiasing = false;
         scene.kern_size = 3;
 
         double groundRadius = 4000.0;
@@ -52,7 +52,7 @@ int main(void)
                 array_push(&scene.shapes, &randomSphere);
         }
 
-        render_simultaneously(&scene, 100);
+        render_simultaneously(&scene, 200);
 
 //        uint64_t image_width = (uint64_t) scene.camera.width;
 //        uint64_t image_height = (uint64_t) (scene.camera.width / scene.camera.aspect_ratio);
@@ -68,7 +68,7 @@ int main(void)
 //
 //        struct Preview prev;
 //        preview_create(&prev, &renderedImage);
-
+//
 //        uint64_t render_pass = 0;
 
 //        while (preview_tick(&prev) == 0) {

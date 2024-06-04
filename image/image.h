@@ -42,6 +42,6 @@ int image_fill(struct Image *image, struct Pixel color);
 
 int image_add(struct Image *target, struct Image *another);
 
-int image_output_average(struct Image *target, struct Image *source, uint64_t sample_count);
+int image_compute_mean(struct Image *image, uint64_t sample_count);
 
 #endif //XEOM_IMAGE_H

@@ -18,7 +18,7 @@ struct RenderThread {
 
 void *render(struct RenderThread *thread)
 {
-        printf("[Started thread %llu]\n", thread->number);
+//        printf("[Started thread %llu]\n", thread->number);
 
         struct Image outputImage;
 
@@ -32,41 +32,44 @@ void *render(struct RenderThread *thread)
                 return NULL;
         }
 
-        printf("[Thread %llu finished]\n", thread->number);
+//        printf("[Thread %llu finished]\n", thread->number);
 
         thread->image = outputImage;
 
         return NULL;
 }
 
-void render_simultaneously(const struct Scene *scene, uint64_t threads)
+struct Image render_simultaneously(const struct Scene *scene, uint64_t samples)
 {
-        pthread_t _threads[threads];
-        struct RenderThread renderThreads[threads];
+        pthread_t _threads[samples];
+        struct RenderThread renderThreads[samples];
 
-        printf("[Starting %llu rendering threads ...]\n", threads);
+//        printf("[Starting %llu rendering threads ...]\n", samples);
 
-        for (uint64_t i = 0; i < threads; i++) {
+        for (uint64_t i = 0; i < samples; i++) {
                 renderThreads[i].scene = scene;
                 renderThreads[i].number = i;
 
                 pthread_create(&_threads[i], NULL, (void *) render, (void *) &renderThreads[i]);
         }
 
-        for (uint64_t i = 0; i < threads; i++)
+        for (uint64_t i = 0; i < samples; i++)
                 pthread_join(_threads[i], NULL);
 
-        printf("[Dumping samples to files]\n");
+//        printf("[Computing mean from samples ...]\n");
 
-        char *filename = malloc(100);
+        struct Image intermediate;
+        image_create(&intermediate, (uint64_t) scene->camera.width,
+                     (uint64_t) (scene->camera.width / scene->camera.aspect_ratio));
 
-        for (uint64_t i = 0; i < threads; i++) {
-                sprintf(filename, "sample_%llu.ppm", renderThreads[i].number);
-                image_write(&renderThreads[i].image, FORMAT_PPM, filename);
+        for (uint64_t i = 0; i < samples; i++) {
+                image_add(&intermediate, &renderThreads[i].image);
                 image_free(&renderThreads[i].image);
         }
 
-        free(filename);
+        image_compute_mean(&intermediate, samples + 1);
 
-        printf("[All done]\n");
+//        printf("[Done rendering %llu samples]\n", samples);
+
+        return intermediate;
 }

@@ -52,56 +52,15 @@ int main(void)
                 array_push(&scene.shapes, &randomSphere);
         }
 
-        render_simultaneously(&scene, 200);
+        struct Image output = render_simultaneously(&scene, 10);
 
-//        uint64_t image_width = (uint64_t) scene.camera.width;
-//        uint64_t image_height = (uint64_t) (scene.camera.width / scene.camera.aspect_ratio);
-//
-//        struct Image outputImage;
-//        image_create(&outputImage, image_width, image_height);
-//
-//        struct Image temporaryImage;
-//        image_create(&temporaryImage, image_width, image_height);
-//
-//        struct Image renderedImage;
-//        image_create(&renderedImage, image_width, image_height);
-//
-//        struct Preview prev;
-//        preview_create(&prev, &renderedImage);
-//
-//        uint64_t render_pass = 0;
+        struct Preview prev;
+        preview_create(&prev, &output);
 
-//        while (preview_tick(&prev) == 0) {
-//        while (true) {
-//                printf("Rendering pass %llu ...\n", render_pass);
-//
-//                if (scene_render(&scene, ((render_pass++) == 0) ? &outputImage : &temporaryImage) < 0) {
-//                        printf("Rendering failed: %s\n", xeom_string_error());
-//                        goto error;
-//                }
-//
-//                if (render_pass > 1) {
-//                        image_output_average(&renderedImage, &outputImage, render_pass);
-//                }
-//
-//                if (image_add(&outputImage, &temporaryImage) < 0) {
-//                        printf("Progressive refine failed: %s\n", xeom_string_error());
-//                        goto error;
-//                }
-//
-//                if (render_pass == 200) {
-//                        printf("-- PPM image of pass %llu written to file --\n", render_pass);
-//                        image_write(&renderedImage, FORMAT_PPM, "cumulative_result.ppm");
-//                        break;
-//                }
-//        }
-//
-//        }
+        while (preview_tick(&prev) == 0) {
+                output = render_simultaneously(&scene, 100);
+        }
 
-//        error:
-//        image_free(&outputImage);
-//        image_free(&temporaryImage);
-//        image_free(&renderedImage);
         scene_free(&scene);
         return 0;
 }

@@ -146,19 +146,12 @@ int image_add(struct Image *target, struct Image *another)
         return 0;
 }
 
-int image_output_average(struct Image *target, struct Image *source, uint64_t sample_count)
+int image_compute_mean(struct Image *image, uint64_t sample_count)
 {
-        if (target->width != source->width || target->height != source->height) {
-                raise_error(XEOM_IMG_AVG_UNMATCHED_SIZES);
-                return -1;
-        }
-
-        for (uint64_t i = 0; i < target->width * target->height; i++) {
-                struct Pixel anotherPixel = source->pixels[i];
-
-                target->pixels[i].r = anotherPixel.r / sample_count;
-                target->pixels[i].g = anotherPixel.g / sample_count;
-                target->pixels[i].b = anotherPixel.b / sample_count;
+        for (uint64_t i = 0; i < image->width * image->height; i++) {
+                image->pixels[i].r /= sample_count;
+                image->pixels[i].g /= sample_count;
+                image->pixels[i].b /= sample_count;
         }
 
         return 0;

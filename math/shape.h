@@ -21,6 +21,7 @@ struct Shape {
         struct {
                 double diffuse_roughness;
                 uint8_t diffuse_samples;
+                double metal_fuzz_amount;
         } shading_hints;
         union {
                 struct {

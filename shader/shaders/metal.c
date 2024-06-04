@@ -21,6 +21,11 @@ ShaderFunction(shader_metal, intersection, scene, bounces)
         for (uint64_t i = 0; i < n; i++) {
                 struct Vec3d normal = orgNormal;
 
+                // Add some "fuzz" to the metal
+                normal.x += (intersection->shape->shading_hints.metal_fuzz_amount / RAND_MAX) * rand();
+                normal.y += (intersection->shape->shading_hints.metal_fuzz_amount / RAND_MAX) * rand();
+                normal.z += (intersection->shape->shading_hints.metal_fuzz_amount / RAND_MAX) * rand();
+
                 // Trace a ray in that direction
                 struct Ray outbound = {.origin = origin, .direction = normal};
 

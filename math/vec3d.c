@@ -44,6 +44,13 @@ double vec3d_magnitude(struct Vec3d *vec)
 #undef SQ
 }
 
+double vec3d_distance_between(struct Vec3d *a, struct Vec3d *b)
+{
+        struct Vec3d vec = *a;
+        vec3d_sub(&vec, b);
+        return vec3d_magnitude(&vec);
+}
+
 void vec3d_normalize(struct Vec3d *vec)
 {
         double mag = vec3d_magnitude(vec);

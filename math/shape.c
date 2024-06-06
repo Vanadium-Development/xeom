@@ -23,6 +23,57 @@ struct Vec3d shape_normal(struct Intersection *inter)
         return normal;
 }
 
+_Bool _any_obstructions_to(struct Vec3d *origin, struct Vec3d *target, struct Scene *scene)
+{
+        double distance = vec3d_distance_between(origin, target);
+        struct Vec3d d = *target;
+        vec3d_sub(&d, origin);
+        struct Ray ray = {.origin = *origin, .direction = d};
+
+        for (uint64_t i = 0; i < scene->shapes.length; i++) {
+                struct Shape *s = ((struct Shape *) array_get(&scene->shapes, i));
+                if (ray_shape(&ray, s).exists)
+                        return true;
+        }
+
+        return false;
+}
+
+#include <stdio.h>
+
+double light_intensity(struct Vec3d *point, struct Scene *scene)
+{
+        double totalIntensity = 0.0;
+        uint64_t sourceCount = 0;
+        for (uint64_t i = 0; i < scene->shapes.length; i++) {
+                struct Shape *s = ((struct Shape *) array_get(&scene->shapes, i));
+                if (s->type != SHAPE_POINT_LIGHT)
+                        continue;
+                if (_any_obstructions_to(point, &s->point_light.location, scene))
+                        continue;
+                double distance = vec3d_distance_between(point, &s->point_light.location);
+
+#define CLAMP(x, low, high) (((x) < (low)) ? (low) : (((x) > (high)) ? (high) : (x)))
+
+                totalIntensity += CLAMP((1.0 - (1.0 / s->point_light.strength) * distance), 0.0, 1.0);
+
+                if (totalIntensity > 0.0)
+                        sourceCount++;
+
+#undef CLAMP
+        }
+
+        if (!sourceCount)
+                return 0.0;
+
+        double intensity = totalIntensity / (double) sourceCount;
+
+        if (intensity > 1.0)
+                printf("What the fuck?\n");
+
+        return intensity;
+}
+
 struct Intersection no_intersection()
 {
         return (struct Intersection) {.exists = false, .shape = NULL, .ray = NULL, .distance = 0.0};
@@ -30,6 +81,9 @@ struct Intersection no_intersection()
 
 struct Intersection ray_shape(struct Ray *ray, struct Shape *shape)
 {
+        if (shape->intersectible)
+                return no_intersection();
+
         if (shape->type == SHAPE_SPHERE)
                 return ray_sphere(ray, shape);
 

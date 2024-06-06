@@ -22,7 +22,8 @@ void scene_create(struct Scene *scene)
                 .focal_length = 1.0,
                 .location = vec(0.0, 0.0, 0.0),
         };
-        scene->bounces_limit = 5;
+        scene->ray_fuzz = 0.1;
+        scene->bounces_limit = 10;
 }
 
 void scene_free(struct Scene *scene)

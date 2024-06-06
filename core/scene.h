@@ -15,6 +15,7 @@ struct Scene {
         _Bool antialiasing;
         uint64_t kern_size;
         uint64_t bounces_limit;
+        double ray_fuzz;
 };
 
 void scene_create(struct Scene *scene);

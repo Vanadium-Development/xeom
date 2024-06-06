@@ -21,6 +21,8 @@ void vec3d_sub(struct Vec3d *target, struct Vec3d *another);
 
 double vec3d_magnitude(struct Vec3d *vec);
 
+double vec3d_distance_between(struct Vec3d *a, struct Vec3d *b);
+
 void vec3d_normalize(struct Vec3d *vec);
 
 double vec3d_dot(struct Vec3d *a, struct Vec3d *b);

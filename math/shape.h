@@ -11,13 +11,15 @@
 #include "../shader/shader.h"
 
 enum ShapeType {
-        SHAPE_SPHERE
+        SHAPE_SPHERE,
+        SHAPE_POINT_LIGHT
 };
 
 struct Shape {
         enum ShapeType type;
         FragmentShader shader;
         struct Pixel color;
+        _Bool intersectible;
         struct {
                 double diffuse_roughness;
                 uint8_t diffuse_samples;
@@ -28,10 +30,16 @@ struct Shape {
                         struct Vec3d center;
                         double radius;
                 } sphere;
+                struct {
+                        struct Vec3d location;
+                        double strength;
+                } point_light;
         };
 };
 
 struct Vec3d shape_normal(struct Intersection *);
+
+double light_intensity(struct Vec3d *point, struct Scene *scene);
 
 struct Intersection {
         _Bool exists;

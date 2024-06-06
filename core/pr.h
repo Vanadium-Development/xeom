@@ -9,6 +9,6 @@
 
 #include "scene.h"
 
-struct Image render_simultaneously(const struct Scene *scene, uint64_t samples);
+struct Image render_simultaneously(struct Scene *scene, uint64_t samples);
 
 #endif //XEOM_PR_H

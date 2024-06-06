@@ -23,7 +23,8 @@ int main(void)
         scene.camera.location.y += 0.25;
         scene.camera.aspect_ratio = 10.0 / 9.0;
         scene.antialiasing = false;
-        scene.kern_size = 3;
+        scene.kern_size = 2;
+        scene.ray_fuzz = 0.00;
 
         double groundRadius = 4000.0;
 
@@ -32,7 +33,7 @@ int main(void)
         goundSphere.sphere.center = vec(0.0, groundRadius + 0.828, 0.0);
         goundSphere.color = rgb(240, 240, 240);
         goundSphere.shader = shader_diffuse;
-        goundSphere.shading_hints.diffuse_roughness = 0.1;
+        goundSphere.shading_hints.diffuse_roughness = 0.5;
 
         array_push(&scene.shapes, &goundSphere);
 
@@ -45,21 +46,23 @@ int main(void)
                                                  ((double) rand() / (double) RAND_MAX) * 15.0 + 1.0);
                 rand();
                 randomSphere.color = rgb(rand() % 255, rand() % 255, rand() % 255);
-                randomSphere.shader = (rand() % 10 > 2) ? shader_diffuse : shader_metal;
-                if (randomSphere.shader == shader_metal)
-                        randomSphere.shading_hints.metal_fuzz_amount = 0.2;
-                randomSphere.shading_hints.diffuse_roughness = 0.25;
+                randomSphere.shader = shader_diffuse;
+//                randomSphere.shader = (rand() % 10 > 2) ? shader_diffuse : shader_metal;
+//                if (randomSphere.shader == shader_metal)
+//                        randomSphere.shading_hints.metal_fuzz_amount = 0.2;
+                randomSphere.shading_hints.diffuse_roughness = 0.5;
                 array_push(&scene.shapes, &randomSphere);
         }
+//
+        struct Image output = render_simultaneously(&scene, 100);
 
-        struct Image output = render_simultaneously(&scene, 10);
-
+//
         struct Preview prev;
         preview_create(&prev, &output);
 
-        while (preview_tick(&prev) == 0) {
-                output = render_simultaneously(&scene, 100);
-        }
+        while (preview_tick(&prev) == 0);
+//                output = render_simultaneously(&scene, (samples >= 100) ? samples : (samples+=10));
+
 
         scene_free(&scene);
         return 0;

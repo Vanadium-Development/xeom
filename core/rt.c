@@ -46,6 +46,12 @@ struct Ray scene_ray(double x, double y, struct Scene *scene)
 
         vec3d_normalize(&direction);
 
+        direction.x += ((1.0 / RAND_MAX) * rand()) * scene->ray_fuzz;
+        direction.y += ((1.0 / RAND_MAX) * rand()) * scene->ray_fuzz;
+        direction.z += ((1.0 / RAND_MAX) * rand()) * scene->ray_fuzz;
+
+        vec3d_normalize(&direction);
+
         return (struct Ray) {
                 .origin = scene->camera.location,
                 .direction = direction

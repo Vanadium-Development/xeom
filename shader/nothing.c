@@ -8,10 +8,12 @@ inline struct Pixel render_sky(double frame_height, double y) {
 
 //        double d = 255.0 * (1.0 - (y / frame_height));
 
+//        return pixel_black();
+
         return rgb(255, 255, 255);
 
-//        struct Pixel initialColor = rgb(52, 152, 219);
-//        struct Pixel targetColor = rgb(236, 240, 241);
+//        struct Pixel initialColor = rgb(203, 200, 240);
+//        struct Pixel targetColor = rgb(255, 255, 255);
 //
 //        double deltaR = targetColor.r - initialColor.r;
 //        double deltaG = targetColor.g - initialColor.g;

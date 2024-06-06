@@ -8,6 +8,8 @@
 
 #include <pthread.h>
 
+#include <stdbool.h>
+
 #include <stdio.h>
 
 struct RenderThread {
@@ -39,7 +41,7 @@ void *render(struct RenderThread *thread)
         return NULL;
 }
 
-struct Image render_simultaneously(const struct Scene *scene, uint64_t samples)
+struct Image render_simultaneously(struct Scene *scene, uint64_t samples)
 {
         pthread_t _threads[samples];
         struct RenderThread renderThreads[samples];

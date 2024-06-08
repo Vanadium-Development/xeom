@@ -42,6 +42,9 @@ add_executable(xeom xeom/main.c
         core/pr.c
 )
 
+# Link with the math library
+target_link_libraries(xeom m)
+
 if (XEOM_COMPILE_WITH_SDL)
     add_compile_definitions(XEOM_USE_GUI)
     find_package(SDL2 REQUIRED)

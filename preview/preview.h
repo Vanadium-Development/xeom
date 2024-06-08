@@ -5,6 +5,8 @@
 #ifndef XEOM_PREVIEW_H
 #define XEOM_PREVIEW_H
 
+#ifdef XEOM_USE_GUI
+
 #include <SDL2/SDL.h>
 
 #include "../image/image.h"
@@ -22,5 +24,7 @@ void preview_render(struct Preview *preview);
 int preview_tick(struct Preview *preview);
 
 void preview_close_and_destroy(struct Preview *preview);
+
+#endif
 
 #endif //XEOM_PREVIEW_H

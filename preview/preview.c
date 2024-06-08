@@ -2,6 +2,8 @@
 // Created by Piotr Krzysztof Wyrwas on 28.05.24.
 //
 
+#ifdef XEOM_USE_GUI
+
 #include "preview.h"
 
 void preview_render(struct Preview *preview)
@@ -82,3 +84,5 @@ void preview_close_and_destroy(struct Preview *preview)
         SDL_DestroyRenderer(preview->renderer);
         SDL_DestroyWindow(preview->window);
 }
+
+#endif

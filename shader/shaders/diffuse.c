@@ -15,18 +15,12 @@ ShaderFunction(shader_diffuse, inter, scene, bounces)
 
         struct Vec3d randomVector = vec3d_random();
 
-        // Make sure the vector is not pointing at the inside of the sphere
-
         vec3d_normalize(&randomVector);
 
-        // Lambertian stuff
-        vec3d_add(&randomVector, &normal);
-
+        // Make sure the vector is not pointing at the inside of the sphere
         if (vec3d_dot(&normal, &randomVector) < 0) {
                 vec3d_mul(&randomVector, -1.0);
         }
-
-        vec3d_normalize(&randomVector);
 
         struct Ray outboundRay = {.origin = intersectionPoint, randomVector};
 

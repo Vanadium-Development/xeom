@@ -22,6 +22,6 @@ void scene_create(struct Scene *scene);
 
 void scene_free(struct Scene *scene);
 
-int scene_render(struct Scene *scene, struct Image *output);
+int scene_render(const struct Scene *scene, struct Image *output);
 
 #endif //XEOM_SCENE_H

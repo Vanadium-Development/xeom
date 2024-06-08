@@ -12,16 +12,19 @@ inline struct Pixel render_sky(double frame_height, double y) {
 
         return rgb(255, 255, 255);
 
-//        struct Pixel initialColor = rgb(203, 200, 240);
-//        struct Pixel targetColor = rgb(255, 255, 255);
+//        struct Pixel initialColor = rgb(255, 255, 255);
+//        struct Pixel targetColor = rgb(200, 200, 200);
 //
-//        double deltaR = targetColor.r - initialColor.r;
-//        double deltaG = targetColor.g - initialColor.g;
-//        double deltaB = targetColor.b - initialColor.b;
+//        double deltaR = (double) targetColor.r - (double) initialColor.r;
+//        double deltaG = (double) targetColor.g - (double) initialColor.g;
+//        double deltaB = (double) targetColor.b - (double) initialColor.b;
 //
-//        return (struct Pixel) {
-//                .r = initialColor.r + (deltaR / (double) frame_height) * (double) y,
-//                .g = initialColor.g + (deltaG / (double) frame_height) * (double) y,
-//                .b = initialColor.b + (deltaB / (double) frame_height) * (double) y,
-//        };
+//        if (y < 0)
+//                y *= -1;
+//
+//        double _r = ((double) initialColor.r) + (deltaR * y);
+//        double _g = ((double) initialColor.g) + (deltaG * y);
+//        double _b = ((double) initialColor.b) + (deltaB * y);
+//
+//        return rgb(_r, _g, _b);
 }

@@ -18,7 +18,7 @@ struct RenderThread {
         struct Image image;
 };
 
-void *render(struct RenderThread *thread)
+void *_render(struct RenderThread *thread)
 {
 //        printf("[Started thread %llu]\n", thread->number);
 
@@ -43,6 +43,8 @@ void *render(struct RenderThread *thread)
 
 struct Image render_simultaneously(struct Scene *scene, uint64_t samples)
 {
+        printf("[Multiprocessor-rendering %llu samples ..]\n", samples);
+
         pthread_t _threads[samples];
         struct RenderThread renderThreads[samples];
 
@@ -52,7 +54,7 @@ struct Image render_simultaneously(struct Scene *scene, uint64_t samples)
                 renderThreads[i].scene = scene;
                 renderThreads[i].number = i;
 
-                pthread_create(&_threads[i], NULL, (void *) render, (void *) &renderThreads[i]);
+                pthread_create(&_threads[i], NULL, (void *) _render, (void *) &renderThreads[i]);
         }
 
         for (uint64_t i = 0; i < samples; i++)

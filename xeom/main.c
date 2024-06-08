@@ -2,8 +2,6 @@
 
 #include "../image/image.h"
 
-#include "../error/error.h"
-
 #include "../preview/preview.h"
 
 #include "../core/scene.h"
@@ -16,28 +14,44 @@
 
 int main(void)
 {
+        uint64_t nSamples = 100;
+
+#ifdef XEOM_USE_GUI
+        printf("The image will be revealed in an SDL preview after rendering.\n");
+#else
+        printf("The image will be outputted to a file after rendering.\n");
+#endif
+
         struct Scene scene;
 
         scene_create(&scene);
         scene.camera.width = 1000;
         scene.camera.location.y += 0.25;
-        scene.camera.aspect_ratio = 10.0 / 9.0;
+        scene.camera.aspect_ratio = 1.0;
         scene.antialiasing = false;
         scene.kern_size = 2;
-        scene.ray_fuzz = 0.00;
+        scene.ray_fuzz = 0.0;
 
-        double groundRadius = 4000.0;
+        double groundRadius = 10000000.0;
 
         struct Shape goundSphere = {.type = SHAPE_SPHERE};
         goundSphere.sphere.radius = groundRadius;
-        goundSphere.sphere.center = vec(0.0, groundRadius + 0.828, 0.0);
+        goundSphere.sphere.center = vec(0.0, groundRadius + 0.84, 1.0);
         goundSphere.color = rgb(240, 240, 240);
         goundSphere.shader = shader_diffuse;
-        goundSphere.shading_hints.diffuse_roughness = 0.5;
-
+        goundSphere.shading_hints.diffuse_roughness = 0.1;
         array_push(&scene.shapes, &goundSphere);
 
-        for (int i = 0; i < 70; i++) {
+//        struct Shape another = {.type = SHAPE_SPHERE};
+//        another.sphere.radius = 0.2;
+//        another.sphere.center = vec(0.0, 0.3997 + verticalOffset, 1.0);
+//        another.color = rgb(255, 0, 0);
+//        another.shader = shader_metal;
+//        another.shading_hints.diffuse_roughness = 0.1;
+//        array_push(&scene.shapes, &another);
+
+
+        for (int i = 0; i < 100; i++) {
                 double radius = ((double) rand() / (double) RAND_MAX) / 4.0 + 0.05;
                 struct Shape randomSphere = {.type = SHAPE_SPHERE};
                 randomSphere.sphere.radius = radius;
@@ -46,24 +60,32 @@ int main(void)
                                                  ((double) rand() / (double) RAND_MAX) * 15.0 + 1.0);
                 rand();
                 randomSphere.color = rgb(rand() % 255, rand() % 255, rand() % 255);
-                randomSphere.shader = shader_diffuse;
-//                randomSphere.shader = (rand() % 10 > 2) ? shader_diffuse : shader_metal;
-//                if (randomSphere.shader == shader_metal)
-//                        randomSphere.shading_hints.metal_fuzz_amount = 0.2;
-                randomSphere.shading_hints.diffuse_roughness = 0.5;
+//                randomSphere.color = rgb(100, 100, 100);
+//                randomSphere.shader = shader_diffuse;
+//                randomSphere.shader = shader_diffuse;
+                randomSphere.shader = (rand() % 10 > 2) ? shader_diffuse : shader_metal;
+                if (randomSphere.shader == shader_metal)
+                        randomSphere.shading_hints.metal_fuzz_amount = 0.2;
+                else
+                        randomSphere.shading_hints.diffuse_roughness = 0.2;
                 array_push(&scene.shapes, &randomSphere);
         }
-//
-        struct Image output = render_simultaneously(&scene, 100);
 
-//
+        struct Image output = render_simultaneously(&scene, nSamples);
+
+#ifdef XEOM_USE_GUI
+        printf("Rendering done. Revealing in SDL preview.\n");
+
         struct Preview prev;
         preview_create(&prev, &output);
 
         while (preview_tick(&prev) == 0);
-//                output = render_simultaneously(&scene, (samples >= 100) ? samples : (samples+=10));
+#else
+        image_write(&output, FORMAT_PPM, "render.ppm");
+        printf("Written mean of %llu samples to PPM file.\n", nSamples);
+#endif
 
-
+        image_free(&output);
         scene_free(&scene);
         return 0;
 }

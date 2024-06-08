@@ -8,7 +8,13 @@
 
 int _array_perform_alloc(struct Array *array)
 {
-        array->data = reallocf(array->data, array->allocated_items * array->item_size);
+#if defined (__APPLE__)
+        #define _realloc reallocf
+#else
+        #define _realloc realloc
+#endif
+
+        array->data = _realloc(array->data, array->allocated_items * array->item_size);
 
         return array->data ? 0 : -1;
 }

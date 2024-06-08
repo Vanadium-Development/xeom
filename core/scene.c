@@ -31,11 +31,11 @@ void scene_free(struct Scene *scene)
         array_free(&scene->shapes, NULL);
 }
 
-int scene_render(struct Scene *scene, struct Image *output)
+int scene_render(const struct Scene *scene, struct Image *output)
 {
         for (uint64_t y = 0; y < scene->camera.width / scene->camera.aspect_ratio; y ++) {
                 for (uint64_t x = 0; x < scene->camera.width; x ++) {
-                        struct Pixel px = scene_trace_single((double) x, (double) y, scene);
+                        struct Pixel px = scene_trace_single((double) x, (double) y, (struct Scene *) scene);
                         image_set(output, (uint64_t) x, (uint64_t) y, px);
                 }
         }

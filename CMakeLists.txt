@@ -36,6 +36,8 @@ add_executable(xeom xeom/main.c
         core/pr.c
 )
 
+add_compile_definitions(XEOM_USE_GUI)
+
 find_package(SDL2 REQUIRED)
 
 include_directories(${SDL2_INCLUDE_DIRS})

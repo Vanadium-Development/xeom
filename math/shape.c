@@ -17,7 +17,6 @@ struct Vec3d shape_normal(struct Intersection *inter)
 
         struct Vec3d normal = ray_interpolate(inter->ray, inter->distance);
         vec3d_sub(&normal, &inter->shape->sphere.center);
-
         vec3d_normalize(&normal);
 
         return normal;

@@ -9,27 +9,37 @@ ShaderFunction(shader_metal, intersection, scene, bounces)
 {
         bounces++;
 
-        // First, find the reflection direction and origin point for the new ray
+        // First, find the reflection direction and reflectedOrigin point for the new ray
         struct Vec3d normal = shape_normal(intersection);
-        struct Vec3d origin = ray_interpolate(intersection->ray, intersection->distance);
+        struct Vec3d reflectedOrigin = ray_interpolate(intersection->ray, intersection->distance);
+
+        vec3d_normalize(&intersection->ray->direction);
+        vec3d_normalize(&normal);
 
         struct Vec3d direction = intersection->ray->direction;
-        double scaling = 2 * (vec3d_dot(&intersection->ray->direction, &normal));
-        struct Vec3d scaledNormal = normal;
-        vec3d_mul(&scaledNormal, scaling);
-        vec3d_sub(&direction, &scaledNormal);
+        vec3d_mul(&direction, -1.0);
+        double dotProduct = 2 * vec3d_dot(&direction, &normal);
+        struct Vec3d multipliedNormal = normal;
+        vec3d_mul(&multipliedNormal, dotProduct);
+        vec3d_sub(&direction, &multipliedNormal);
 
-        vec3d_normalize(&direction);
+        // Add some fuzz ("roughness") to the metal
+        struct Vec3d fuzzVector = vec3d_random();
+        vec3d_mul(&fuzzVector, intersection->shape->shading_hints.metal_fuzz_amount);
+        vec3d_add(&direction, &fuzzVector);
+
+//        if (vec3d_dot(&direction, &normal) < 0)
+//                vec3d_mul(&direction, -1.0);
 
         // Trace a ray in that direction
         struct Ray outbound = {
-                .origin = origin,
+                .origin = reflectedOrigin,
                 .direction = direction
         };
 
         struct Pixel color = _scene_trace_raw(&outbound, scene, bounces);
 
-        pixel_mul(&color, 1.0);
+        pixel_mul(&color, 0.95);
 
         return color;
 }

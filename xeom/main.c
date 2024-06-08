@@ -29,10 +29,10 @@ int main(void)
         struct Scene scene;
 
         scene_create(&scene);
-        scene.camera.width = 1000;
+        scene.camera.width = 1500;
         scene.camera.location.y += 0.25;
         scene.camera.aspect_ratio = 1.0;
-        scene.antialiasing = false;
+        scene.antialiasing = true;
         scene.kern_size = 2;
         scene.ray_fuzz = 0.0;
 
@@ -41,7 +41,7 @@ int main(void)
         struct Shape goundSphere = {.type = SHAPE_SPHERE};
         goundSphere.sphere.radius = groundRadius;
         goundSphere.sphere.center = vec(0.0, groundRadius + 0.84, 1.0);
-        goundSphere.color = rgb(240, 240, 240);
+        goundSphere.color = rgb(255, 255, 255);
         goundSphere.shader = shader_diffuse;
         goundSphere.shading_hints.diffuse_roughness = 0.1;
         array_push(&scene.shapes, &goundSphere);
@@ -55,12 +55,12 @@ int main(void)
 //        array_push(&scene.shapes, &another);
 
 
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 130; i++) {
                 double radius = ((double) rand() / (double) RAND_MAX) / 4.0 + 0.05;
                 struct Shape randomSphere = {.type = SHAPE_SPHERE};
                 randomSphere.sphere.radius = radius;
                 randomSphere.sphere.center = vec(((double) rand() / (double) RAND_MAX) * 10.0 - 6.0,
-                                                 groundRadius + 0.828 - (groundRadius - (1000.0 - 999.98)) - radius,
+                                                 groundRadius + 0.828 - (groundRadius - (1000.0 - 999.97)) - radius,
                                                  ((double) rand() / (double) RAND_MAX) * 15.0 + 1.0);
                 rand();
                 randomSphere.color = rgb(rand() % 255, rand() % 255, rand() % 255);
@@ -69,7 +69,7 @@ int main(void)
 //                randomSphere.shader = shader_diffuse;
                 randomSphere.shader = (rand() % 10 > 2) ? shader_diffuse : shader_metal;
                 if (randomSphere.shader == shader_metal)
-                        randomSphere.shading_hints.metal_fuzz_amount = 0.2;
+                        randomSphere.shading_hints.metal_fuzz_amount = (1.5 / RAND_MAX) * rand();
                 else
                         randomSphere.shading_hints.diffuse_roughness = 0.2;
                 array_push(&scene.shapes, &randomSphere);

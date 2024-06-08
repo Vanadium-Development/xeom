@@ -7,7 +7,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  bin)
 set(CMAKE_C_STANDARD 11)
 
 set(XEOM_COMPILE_WITH_SDL false)
-set(XEOM_RENDER_SAMPLES 99)
+set(XEOM_RENDER_SAMPLES 100)
 
 add_executable(xeom xeom/main.c
         image/image.h
@@ -31,9 +31,7 @@ add_executable(xeom xeom/main.c
         core/rt.c
         core/scene.c
         shader/shader.h
-        shader/shaders/binary.c
         shader/callback.h
-        shader/shaders/normal.c
         math/ray.c
         shader/shaders/metal.c
         shader/nothing.c

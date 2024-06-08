@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.28)
 project(xeom C)
 
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  bin)
+
 set(CMAKE_C_STANDARD 11)
 
 set(XEOM_COMPILE_WITH_SDL false)

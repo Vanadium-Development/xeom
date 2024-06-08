@@ -12,9 +12,13 @@
 
 #include <stdbool.h>
 
+#if !defined (XEOM_RENDER_SAMPLES)
+        #error Number of samples is expected to be defined in compile-time macro 'XEOM_RENDER_SAMPLES'
+#endif
+
 int main(void)
 {
-        uint64_t nSamples = 100;
+        uint64_t nSamples = XEOM_RENDER_SAMPLES;
 
 #ifdef XEOM_USE_GUI
         printf("The image will be revealed in an SDL preview after rendering.\n");

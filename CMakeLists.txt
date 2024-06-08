@@ -3,6 +3,9 @@ project(xeom C)
 
 set(CMAKE_C_STANDARD 11)
 
+set(XEOM_COMPILE_WITH_SDL false)
+set(XEOM_RENDER_SAMPLES 99)
+
 add_executable(xeom xeom/main.c
         image/image.h
         image/image.c
@@ -36,10 +39,11 @@ add_executable(xeom xeom/main.c
         core/pr.c
 )
 
-add_compile_definitions(XEOM_USE_GUI)
+if (XEOM_COMPILE_WITH_SDL)
+    add_compile_definitions(XEOM_USE_GUI)
+    find_package(SDL2 REQUIRED)
+    include_directories(${SDL2_INCLUDE_DIRS})
+    target_link_libraries(xeom ${SDL2_LIBRARIES})
+endif ()
 
-find_package(SDL2 REQUIRED)
-
-include_directories(${SDL2_INCLUDE_DIRS})
-
-target_link_libraries(xeom ${SDL2_LIBRARIES})
+add_compile_definitions(XEOM_RENDER_SAMPLES=${XEOM_RENDER_SAMPLES})

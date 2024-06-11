@@ -20,7 +20,7 @@ struct RenderThread {
 
 void *_render(struct RenderThread *thread)
 {
-//        printf("[Started thread %llu]\n", thread->number);
+        printf("[Started thread %llu]\n", thread->number);
 
         struct Image outputImage;
 
@@ -34,7 +34,7 @@ void *_render(struct RenderThread *thread)
                 return NULL;
         }
 
-//        printf("[Thread %llu finished]\n", thread->number);
+        printf("[Thread %llu finished]\n", thread->number);
 
         thread->image = outputImage;
 
@@ -61,7 +61,6 @@ struct Image render_simultaneously(struct Scene *scene, uint64_t samples)
 
         for (uint64_t i = 0; i < samples; i++) {
                 pthread_join(_threads[i], NULL);
-                printf("[%llu samples still rendering]\n", -- remaining_samples);
         }
 
 //        printf("[Computing mean from samples ...]\n");

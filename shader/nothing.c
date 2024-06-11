@@ -4,7 +4,8 @@
 
 #include "shader.h"
 
-inline struct Pixel render_sky(double frame_height, double y) {
+inline struct Pixel render_sky(double frame_height, double y)
+{
 
 //        double d = 255.0 * (1.0 - (y / frame_height));
 
@@ -12,8 +13,10 @@ inline struct Pixel render_sky(double frame_height, double y) {
 
         return rgb(255, 255, 255);
 
+//        return rgb(235, 245, 255);
+
 //        struct Pixel initialColor = rgb(255, 255, 255);
-//        struct Pixel targetColor = rgb(200, 200, 200);
+//        struct Pixel targetColor = rgb(235, 245, 255);
 //
 //        double deltaR = (double) targetColor.r - (double) initialColor.r;
 //        double deltaG = (double) targetColor.g - (double) initialColor.g;

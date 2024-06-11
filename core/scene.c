@@ -23,7 +23,7 @@ void scene_create(struct Scene *scene)
                 .location = vec(0.0, 0.0, 0.0),
         };
         scene->ray_fuzz = 0.1;
-        scene->bounces_limit = 10;
+        scene->bounces_limit = 100;
 }
 
 void scene_free(struct Scene *scene)

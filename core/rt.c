@@ -40,15 +40,9 @@ struct Ray scene_ray(double x, double y, struct Scene *scene)
         double y00 = 1.0 / (scene->camera.width / scene->camera.aspect_ratio) - 0.5;
 
         double dx = 1.0 / scene->camera.width;
-        double dy = 1.0 / scene->camera.width / scene->camera.aspect_ratio;
+        double dy = 1.0 / (scene->camera.width / scene->camera.aspect_ratio);
 
         struct Vec3d direction = {.x = x00 + x * dx, .y = y00 + y * dy, scene->camera.focal_length};
-
-        vec3d_normalize(&direction);
-
-        direction.x += ((1.0 / RAND_MAX) * rand()) * scene->ray_fuzz;
-        direction.y += ((1.0 / RAND_MAX) * rand()) * scene->ray_fuzz;
-        direction.z += ((1.0 / RAND_MAX) * rand()) * scene->ray_fuzz;
 
         vec3d_normalize(&direction);
 

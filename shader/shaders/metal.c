@@ -9,6 +9,12 @@ ShaderFunction(shader_metal, intersection, scene, bounces)
 {
         bounces++;
 
+        if (bounces + 1 > scene->bounces_limit) {
+                intersection->shape->shading_hints.diffuse_roughness = 0.5;
+                intersection->shape->color = rgb(255, 255, 255);
+                return shader_diffuse(intersection, scene, bounces - 20);
+        }
+
         // First, find the reflection direction and reflectedOrigin point for the new ray
         struct Vec3d normal = shape_normal(intersection);
         struct Vec3d reflectedOrigin = ray_interpolate(intersection->ray, intersection->distance);
@@ -38,8 +44,6 @@ ShaderFunction(shader_metal, intersection, scene, bounces)
         };
 
         struct Pixel color = _scene_trace_raw(&outbound, scene, bounces);
-
-        pixel_mul(&color, 0.95);
 
         return color;
 }

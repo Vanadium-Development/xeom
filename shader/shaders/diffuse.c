@@ -30,7 +30,7 @@ ShaderFunction(shader_diffuse, inter, scene, bounces)
 
         struct Pixel eigenFarbe = inter->shape->color;
 
-        pixel_mul(&eigenFarbe, inter->shape->shading_hints.diffuse_roughness);
+        pixel_mul(&eigenFarbe, 0.0);
 
         return rgb(rayColor.r + eigenFarbe.r, rayColor.g + eigenFarbe.g, rayColor.b + eigenFarbe.b);
 }

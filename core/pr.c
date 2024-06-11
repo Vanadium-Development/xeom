@@ -48,6 +48,8 @@ struct Image render_simultaneously(struct Scene *scene, uint64_t samples)
         pthread_t _threads[samples];
         struct RenderThread renderThreads[samples];
 
+        uint64_t remaining_samples = samples;
+
 //        printf("[Starting %llu rendering threads ...]\n", samples);
 
         for (uint64_t i = 0; i < samples; i++) {
@@ -57,8 +59,10 @@ struct Image render_simultaneously(struct Scene *scene, uint64_t samples)
                 pthread_create(&_threads[i], NULL, (void *) _render, (void *) &renderThreads[i]);
         }
 
-        for (uint64_t i = 0; i < samples; i++)
+        for (uint64_t i = 0; i < samples; i++) {
                 pthread_join(_threads[i], NULL);
+                printf("[%llu samples still rendering]\n", -- remaining_samples);
+        }
 
 //        printf("[Computing mean from samples ...]\n");
 

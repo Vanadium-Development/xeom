@@ -89,7 +89,7 @@ struct Intersection ray_shape(struct Ray *ray, struct Shape *shape)
         return no_intersection();
 }
 
-#define EPSILON (10E-6)
+#define EPSILON (10E-10)
 
 struct Intersection ray_sphere(struct Ray *ray, struct Shape *shape)
 {

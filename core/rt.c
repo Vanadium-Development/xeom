@@ -64,7 +64,16 @@ struct Pixel _scene_trace_raw(struct Ray *ray, struct Scene *scene, uint64_t bou
                 return pixel_black();
         }
 
-        struct Pixel color = render_sky(2, ray->direction.y + 1);
+        struct Vec3d org = ray->origin;
+
+        struct Pixel color;
+
+//        if (org.x == scene->camera.location.x && org.y == scene->camera.location.y &&
+//            org.z == scene->camera.location.z) {
+//                color = pixel_black();
+//        } else {
+                color = render_sky(2, ray->direction.y + 1);;
+//        }
 
         struct Intersection inter = trace_ray(ray, scene);
 

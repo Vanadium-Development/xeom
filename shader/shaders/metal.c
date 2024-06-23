@@ -45,5 +45,7 @@ ShaderFunction(shader_metal, intersection, scene, bounces)
 
         struct Pixel color = _scene_trace_raw(&outbound, scene, bounces);
 
+        pixel_mul(&color, 0.95);
+
         return color;
 }

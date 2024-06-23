@@ -18,9 +18,8 @@ ShaderFunction(shader_diffuse, inter, scene, bounces)
         vec3d_normalize(&randomVector);
 
         // Make sure the vector is not pointing at the inside of the sphere
-        if (vec3d_dot(&normal, &randomVector) < 0) {
+        if (vec3d_dot(&normal, &randomVector) < 0)
                 vec3d_mul(&randomVector, -1.0);
-        }
 
         struct Ray outboundRay = {.origin = intersectionPoint, randomVector};
 
@@ -30,7 +29,7 @@ ShaderFunction(shader_diffuse, inter, scene, bounces)
 
         struct Pixel eigenFarbe = inter->shape->color;
 
-        pixel_mul(&eigenFarbe, 0.0);
+        pixel_mul(&eigenFarbe, inter->shape->shading_hints.diffuse_roughness);
 
         return rgb(rayColor.r + eigenFarbe.r, rayColor.g + eigenFarbe.g, rayColor.b + eigenFarbe.b);
 }

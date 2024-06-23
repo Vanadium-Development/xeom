@@ -31,36 +31,34 @@ int main(void)
         scene_create(&scene);
         scene.camera.width = 1000;
         scene.camera.aspect_ratio = 1.0;
+//        scene.camera.focal_length = 1.5;
         scene.antialiasing = false;
-        scene.kern_size = 2;
+        scene.kern_size = 3;
 
-        double groundRadius = 4000.0;
+        struct Shape ball1 = {.type = SHAPE_SPHERE};
+        ball1.sphere.radius = 0.5;
+        ball1.sphere.center = vec(0.0, -0.5, 3.0);
+        ball1.color = rgb(255, 0, 0);
+        ball1.shader = shader_diffuse;
+        ball1.shading_hints.diffuse_roughness = 0.2;
+        array_push(&scene.shapes, &ball1);
 
-        struct Shape goundSphere = {.type = SHAPE_SPHERE};
-        goundSphere.sphere.radius = groundRadius;
-        goundSphere.sphere.center = vec(0.0, groundRadius + 0.828, 0.0);
-        goundSphere.color = rgb(240, 240, 240);
-        goundSphere.shader = shader_diffuse;
-        goundSphere.shading_hints.diffuse_roughness = 0.25;
+        struct Shape ball2 = {.type = SHAPE_SPHERE};
+        ball2.sphere.radius = 0.5;
+        ball2.sphere.center = vec(0.0, 0.49, 3.0);
+        ball2.color = rgb(0, 0, 255);
+        ball2.shader = shader_diffuse;
+        ball2.shading_hints.diffuse_roughness = 0.2;
+        array_push(&scene.shapes, &ball2);
 
-        array_push(&scene.shapes, &goundSphere);
-
-        for (int i = 0; i < 70; i++) {
-                double radius = ((double) rand() / (double) RAND_MAX) / 4.0 + 0.05;
-                struct Shape randomSphere = {.type = SHAPE_SPHERE};
-                randomSphere.sphere.radius = radius;
-                randomSphere.sphere.center = vec(((double) rand() / (double) RAND_MAX) * 10.0 - 6.0,
-                                                 groundRadius + 0.828 - (groundRadius - (1000.0 - 999.98)) - radius,
-                                                 ((double) rand() / (double) RAND_MAX) * 15.0 + 1.0);
-                rand();
-                randomSphere.color = rgb(rand() % 255, rand() % 255, rand() % 255);
-                randomSphere.shader = shader_diffuse;
-//                randomSphere.shader = (rand() % 10 > 2) ? shader_diffuse : shader_metal;
-//                if (randomSphere.shader == shader_metal)
-//                        randomSphere.shading_hints.metal_fuzz_amount = 0.2;
-                randomSphere.shading_hints.diffuse_roughness = 0.2;
-                array_push(&scene.shapes, &randomSphere);
-        }
+        struct Shape ball3 = {.type = SHAPE_SPHERE};
+        ball3.sphere.radius = 0.25;
+        ball3.sphere.center = vec(0.55, 0.0, 3.0);
+        ball3.color = rgb(255, 255, 255);
+        ball3.shader = shader_metal;
+        ball3.shading_hints.metal_fuzz_amount = 1.5;
+//        ball3.shading_hints.diffuse_roughness = 0.0;
+        array_push(&scene.shapes, &ball3);
 
         struct Image output = render_simultaneously(&scene, nSamples);
 
@@ -70,15 +68,12 @@ int main(void)
         struct Preview prev;
         preview_create(&prev, &output);
 
-        while (preview_tick(&prev) == 0); // {
-//                image_free(&output);
-//                scene.camera.location.y += 0.1;
-//                output = render_simultaneously(&scene, nSamples);
-//        }
+        while (preview_tick(&prev) == 0);
 #else
         image_write(&output, FORMAT_PPM, "render.ppm");
         printf("Written mean of %llu samples to PPM file.\n", nSamples);
 #endif
+
 
         image_free(&output);
         scene_free(&scene);

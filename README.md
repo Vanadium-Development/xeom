@@ -1,2 +1,2 @@
 ## Vanadium Xeom
-A CPU Raytracer
+A CPU Raytracer developed in pure C

@@ -6,8 +6,8 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY  bin)
 
 set(CMAKE_C_STANDARD 11)
 
-set(XEOM_COMPILE_WITH_SDL false)
-set(XEOM_RENDER_SAMPLES 1000)
+set(XEOM_COMPILE_WITH_SDL true)
+set(XEOM_RENDER_SAMPLES  500)
 
 add_executable(xeom xeom/main.c
         image/image.h
